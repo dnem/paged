@@ -90,7 +90,7 @@ var _ = Describe("ResponseWrapper", func() {
 		mx.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			params := ExtractRequestParams(req.URL.Query())
 			count := 67
-			Formatter().JSON(w, http.StatusOK, CollectionWrapper(params, count, params))
+			Formatter().JSON(w, http.StatusOK, CollectionWrapper(params, count))
 			return
 		}).Methods("GET")
 		server := httptest.NewServer(mx)

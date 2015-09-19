@@ -8,15 +8,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-//Pager types provide data necessary for mongodb queries to support
-//filtering, scoping, and paging.
-type Pager interface {
-	Selector() bson.M
-	Scope() bson.M
-	Limit() int
-	Offset() int
-}
-
 //RequestParams holds state parsed from a given HTTP request
 type RequestParams struct {
 	//RawQuery contains the raw query string Values object

@@ -10,10 +10,6 @@ type ResponseWrapper struct {
 	Message string `json:"message,omitempty"`
 	//Count contains the number of records in the result set
 	Count int `json:"count,omitempty"`
-	//Prev provides the URL to the previous result set
-	Prev string `json:"prev_url,omitempty"`
-	//Next provides the URL to the next result set
-	Next string `json:"next_url,omitempty"`
 }
 
 //SuccessWrapper is for successful requests that yield a single
@@ -28,7 +24,7 @@ func SuccessWrapper(data interface{}) (rsp *ResponseWrapper) {
 
 //CollectionWrapper is for successful reuqests that have the potential
 //to yield multiple results.
-func CollectionWrapper(data interface{}, count int, pager Pager) (rsp *ResponseWrapper) {
+func CollectionWrapper(data interface{}, count int) (rsp *ResponseWrapper) {
 	rsp = &ResponseWrapper{
 		Status: successStatus,
 		Data:   data,
