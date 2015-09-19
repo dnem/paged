@@ -89,9 +89,8 @@ var _ = Describe("ResponseWrapper", func() {
 		mx := mux.NewRouter()
 		mx.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			params := ExtractRequestParams(req.URL.Query())
-			data := []int{1, 2, 3, 4, 5}
-			count := len(data)
-			Formatter().JSON(w, http.StatusOK, CollectionWrapper(data, count, params))
+			count := 67
+			Formatter().JSON(w, http.StatusOK, CollectionWrapper(params, count, params))
 			return
 		}).Methods("GET")
 		server := httptest.NewServer(mx)
@@ -115,11 +114,27 @@ var _ = Describe("ResponseWrapper", func() {
 			log.Fatal(err)
 		}
 
+		b, err := json.Marshal(rw.Data)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var p RequestParams
+		err = json.Unmarshal(b, &p)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		It("should have a default values", func() {
 			Expect(rw.Status).To(Equal("success"))
 			Expect(rw.Data).NotTo(BeNil())
-			Expect(rw.Count).To(Equal(5))
+			Expect(rw.Count).To(Equal(67))
 			Expect(rw.Message).To(Equal(""))
+			Expect(p.Limit()).To(Equal(2))
+			Expect(p.Offset()).To(Equal(1))
+			Expect(p.Scope()["fluffy"]).To(Equal(float64(1)))
+			Expect(p.Selector()["a"]).To(Equal("1"))
+			Expect(p.Selector()["b"]).To(Equal("2"))
 		})
 	})
 })
